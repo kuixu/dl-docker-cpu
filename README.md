@@ -1,13 +1,10 @@
-## All-in-one Docker image for Deep Learning
-Here are Dockerfiles to get you up and running with a fully functional deep learning machine. It contains all the popular deep learning frameworks with CPU and GPU support (CUDA and cuDNN included). The CPU version should work on Linux, Windows and OS X. The GPU version will, however, only work on Linux machines. See [OS support](#what-operating-systems-are-supported) for details
+## CPU Version All-in-one Docker image for Deep Learning
+Here are Dockerfiles to get you up and running with a fully functional deep learning machine. It contains all the popular deep learning frameworks with CPU from `dl-docker`: [https://hub.docker.com/r/floydhub/dl-docker/](https://hub.docker.com/r/floydhub/dl-docker/) 
 
-If you are not familiar with Docker, but would still like an all-in-one solution, start here: [What is Docker?](#what-is-docker). If you know what Docker is, but are wondering why we need one for deep learning, [see this](#why-do-i-need-a-docker)
 
 ## Specs
 This is what you get out of the box when you create a container with the provided image/Dockerfile:
 * Ubuntu 14.04
-* [CUDA 7.5](https://developer.nvidia.com/cuda-toolkit) (GPU version only)
-* [cuDNN v4](https://developer.nvidia.com/cudnn) (GPU version only)
 * [Tensorflow](https://www.tensorflow.org/)
 * [Caffe](http://caffe.berkeleyvision.org/)
 * [Theano](http://deeplearning.net/software/theano/)
@@ -20,11 +17,9 @@ This is what you get out of the box when you create a container with the provide
 
 ## Setup
 ### Prerequisites
-1. Install Docker following the installation guide for your platform: [https://docs.docker.com/engine/installation/](https://docs.docker.com/engine/installation/)
+Install Docker following the installation guide for your platform: [https://docs.docker.com/engine/installation/](https://docs.docker.com/engine/installation/)
 
-2. **GPU Version Only**: Install Nvidia drivers on your machine either from [Nvidia](http://www.nvidia.com/Download/index.aspx?lang=en-us) directly or follow the instructions [here](https://github.com/saiprashanths/dl-setup#nvidia-drivers). Note that you _don't_ have to install CUDA or cuDNN. These are included in the Docker container.
 
-3. **GPU Version Only**: Install nvidia-docker: [https://github.com/NVIDIA/nvidia-docker](https://github.com/NVIDIA/nvidia-docker), following the instructions [here](https://github.com/NVIDIA/nvidia-docker/wiki/Installation). This will install a replacement for the docker CLI. It takes care of setting up the Nvidia host driver environment inside the Docker containers and a few other things.
 
 ### Obtaining the Docker image
 You have 2 options to obtain the Docker image
@@ -36,8 +31,6 @@ Docker Hub is a cloud based repository of pre-built images. You can download the
 docker pull floydhub/dl-docker:cpu
 ```
 
-**GPU Version**
-An automated build for the GPU image is not available currently due to timeout restrictions in Docker's automated build process. I'll look into solving this in the future, but for now you'll have to build the GPU version locally using Option 2 below.
 
 #### Option 2: Build the Docker image locally
 Alternatively, you can build the images locally. Also, since the GPU version is not available in Docker Hub at the moment, you'll have to follow this if you want to GPU version. Note that this will take an hour or two depending on your machine since it compiles a few libraries from scratch.
@@ -52,10 +45,7 @@ cd dl-docker
 docker build -t dl-docker:cpu -f Dockerfile.cpu .
 ```
 
-**GPU Version**
-```bash
-docker build -t dl-docker:gpu -f Dockerfile.gpu .
-```
+
 This will build a Docker image named `dl-docker` and tagged either `cpu` or `gpu` depending on the tag your specify. Also note that the appropriate `Dockerfile.<architecture>` has to be used.
 
 ## Running the Docker image as a Container
@@ -65,11 +55,7 @@ Once we've built the image, we have all the frameworks we need installed in it. 
 ```bash
 docker run -it -p 8888:8888 -p 6006:6006 -v /sharedfolder:/root/sharedfolder dl-docker:cpu bash
 ```
-	
-**GPU Version**
-```bash
-nvidia-docker run -it -p 8888:8888 -p 6006:6006 -v /sharedfolder:/root/sharedfolder dl-docker:gpu bash
-```
+
 Note the use of `nvidia-docker` rather than just `docker`
 
 | Parameter      | Explanation |
